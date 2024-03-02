@@ -3,28 +3,28 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 
-export default function Login({
+export default function Signup({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
-  const signIn = async (formData: FormData) => {
+  const signUp = async (formData: FormData) => {
     "use server";
 
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const supabase = createClient();
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
     });
 
     if (error) {
-      return redirect("/login?message=Could not authenticate user");
+      return redirect("/signup?message=Could not authenticate user");
     }
 
-    return redirect("/home");
+    return redirect("/setup");
   };
 
   return (
@@ -51,7 +51,7 @@ export default function Login({
       </Link>
       <div className="w-full">
         <form className="animate-in text-foreground flex w-full flex-1 flex-col justify-center gap-2 rounded-md border border-black p-8 pt-5">
-          <div className="mb-5 text-center text-4xl"> Welcome Back User! </div>
+          <div className="mb-5 text-center text-4xl"> Welcome New User! </div>
           <label className="text-md" htmlFor="email">
             Email
           </label>
@@ -72,16 +72,16 @@ export default function Login({
             required
           />
           <SubmitButton
-            formAction={signIn}
+            formAction={signUp}
             className="mb-2 rounded-md border bg-black px-4 py-2 text-white"
-            pendingText="Signing In..."
+            pendingText="Signing Up..."
           >
-            Sign In
+            Sign Up
           </SubmitButton>
           <div className="text-center">
-            Don't have an account?{" "}
-            <Link href="/signup" className="text-blue-500">
-              Sign Up
+            Already have an account?{" "}
+            <Link href="/login" className="text-blue-500">
+              Log in
             </Link>
           </div>
           {searchParams?.message && (
