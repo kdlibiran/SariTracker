@@ -23,7 +23,9 @@ export default function GoogleMaps({
   });
 
   const [map, setMap] = React.useState<google.maps.Map | null>(null);
-  const onLoad = React.useCallback(function callback(map) {
+  const onLoad = React.useCallback(function callback(
+    map: google.maps.Map | null,
+  ) {
     const bounds = new window.google.maps.LatLngBounds({
       lat: latitude || 0,
       lng: longitude || 0,
@@ -32,7 +34,9 @@ export default function GoogleMaps({
     setMap(map);
   }, []);
 
-  const onUnmount = React.useCallback(function callback(map) {
+  const onUnmount = React.useCallback(function callback(
+    map: google.maps.Map | null,
+  ) {
     setMap(null);
   }, []);
   return isLoaded ? (
