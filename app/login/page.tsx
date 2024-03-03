@@ -24,7 +24,7 @@ export default function Login({
       return redirect("/login?message=Could not authenticate user");
     }
 
-    return redirect("/home");
+    return redirect("/");
   };
 
   return (

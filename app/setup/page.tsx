@@ -34,7 +34,7 @@ export default function Signup({
     if (error) {
       return redirect(`/setup?message=${error.message}`);
     }
-    redirect(`/home`);
+    redirect(`/`);
   };
 
   return (
