@@ -1,9 +1,8 @@
 import NavBar from "@/components/NavBar";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import AddItemBtn from "@/components/AddItemBtn";
 import InventoryTable from "@/components/InventoryTable";
-import { ok } from "assert";
+import { item } from "@/types/supabase";
 
 export default async function Index() {
   const supabase = createClient();
@@ -25,7 +24,6 @@ export default async function Index() {
       data: { user },
     } = await supabase.auth.getUser();
     const store_id = user?.user_metadata?.store_id;
-    console.log(store_id);
     const name = formData.get("name");
     const category = formData.get("category");
     const price = formData.get("price");
@@ -50,10 +48,11 @@ export default async function Index() {
       <div className="flex w-full flex-1 flex-col items-center gap-20">
         <NavBar />
         <div className="flex w-3/4 flex-col px-10">
-          <div className="flex w-[100%] flex-row justify-end">
-            <AddItemBtn formAction={addItem} />
-          </div>
-          <InventoryTable data={data} owner={true} />
+          <InventoryTable
+            data={data as item[]}
+            owner={true}
+            formAction={addItem}
+          />
         </div>
       </div>
     );

@@ -12,7 +12,7 @@ import { SubmitButton } from "@/components/submit-button";
 import { useState } from "react";
 import { DropdownMenuItem } from "./ui/dropdown-menu";
 
-export default function AddStockBtn({
+export default function RemoveStockBtn({
   item,
   formAction,
 }: {
@@ -20,7 +20,7 @@ export default function AddStockBtn({
   formAction: (data: any) => Promise<any>;
 }) {
   const [open, setOpen] = useState(false);
-  const addStock = async (formData: FormData) => {
+  const removeStock = async (formData: FormData) => {
     const response = await formAction(formData);
     if (response == 1) {
       setOpen(false);
@@ -31,14 +31,14 @@ export default function AddStockBtn({
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger>
         <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          Add Stock
+          Remove Stock
         </DropdownMenuItem>
       </SheetTrigger>
       <SheetContent className="bg-white">
         <SheetHeader>
-          <SheetTitle>{item.name}: Add Stock</SheetTitle>
+          <SheetTitle>{item.name}: Remove Stock</SheetTitle>
           <SheetDescription>
-            Fill in the form below to add a stock to {item.name}
+            Fill in the form below to remove stocks for {item.name}
             <div>
               <form className="flex flex-1 flex-col justify-start gap-2 rounded-md p-2 pt-5">
                 <label htmlFor="quantity" className="text-md">
@@ -49,21 +49,12 @@ export default function AddStockBtn({
                   name="quantity"
                   className="rounded-md border bg-inherit px-4 py-2"
                 />
-                <label htmlFor="expiry" className="text-md">
-                  Expiry Date
-                </label>
-                <input
-                  type="date"
-                  name="expiry"
-                  defaultValue={new Date().toISOString().split("T")[0]}
-                  className="rounded-md border bg-inherit px-4 py-2"
-                />
                 <SubmitButton
-                  formAction={addStock}
+                  formAction={removeStock}
                   className="mb-2 rounded-md border bg-black px-4 py-2 text-white"
-                  pendingText="Adding..."
+                  pendingText="Removing..."
                 >
-                  Add Stock
+                  Remove Stock
                 </SubmitButton>
               </form>
             </div>
