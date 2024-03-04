@@ -12,7 +12,13 @@ import { useState } from "react";
 import { useEffect } from "react";
 import ActionDropDown from "./ActionDropDown";
 
-export default function InventoryTable({ data }: { data: any[] | null }) {
+export default function InventoryTable({
+  data,
+  owner,
+}: {
+  data: any[] | null;
+  owner: boolean;
+}) {
   const [items, setItems] = useState<any[] | null>([]);
   const getItems = async () => {
     setItems(data);
@@ -21,7 +27,7 @@ export default function InventoryTable({ data }: { data: any[] | null }) {
     getItems();
   }, []);
 
-  if (items) {
+  if (items && owner) {
     return (
       <Table>
         <TableHeader>
@@ -47,6 +53,25 @@ export default function InventoryTable({ data }: { data: any[] | null }) {
               <TableCell>
                 <ActionDropDown item={row} />
               </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    );
+  } else if (items && !owner) {
+    return (
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>Price</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {items?.map((row) => (
+            <TableRow key={row.id}>
+              <TableCell>{row.name}</TableCell>
+              <TableCell>{row.price}</TableCell>
             </TableRow>
           ))}
         </TableBody>

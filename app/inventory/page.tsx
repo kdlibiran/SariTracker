@@ -53,7 +53,7 @@ export default async function Index() {
           <div className="flex w-[100%] flex-row justify-end">
             <AddItemBtn formAction={addItem} />
           </div>
-          <InventoryTable data={data} />
+          <InventoryTable data={data} owner={true} />
         </div>
       </div>
     );

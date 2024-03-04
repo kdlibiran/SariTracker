@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
+import { useRouter } from "next/navigation";
+
 const containerStyle = {
   width: "400px",
   height: "400px",
@@ -12,6 +14,7 @@ const center = {
 };
 
 export default function StoreMap({ data }: { data: any[] | null }) {
+  const router = useRouter();
   const { isLoaded } = useJsApiLoader({
     id: "pragmatic-ratio-415914",
     googleMapsApiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY!,
@@ -43,6 +46,9 @@ export default function StoreMap({ data }: { data: any[] | null }) {
         {data?.map((store) => (
           <MarkerF
             key={store.id}
+            onClick={() => {
+              router.push(`/store/${store.id}`);
+            }}
             position={{ lat: store.latitude, lng: store.longitude }}
           />
         ))}
