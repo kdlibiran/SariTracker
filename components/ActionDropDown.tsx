@@ -58,6 +58,20 @@ export default function ActionDropDown({ item }: { item: any }) {
     return 1;
   };
 
+  const removeStock = async (formData: FormData) => {
+    const supabase = createClient();
+    const quantity = formData.get("quantity") ?? "0";
+    const date = new Date().toLocaleDateString();
+    const { data, error } = await supabase.from("salesrecord").insert({
+      item_id: item.id,
+      quantity,
+      date,
+    });
+    if (error) {
+      console.log(error);
+    }
+  };
+
   const deleteItem = async () => {
     const supabase = createClient();
 
@@ -81,9 +95,10 @@ export default function ActionDropDown({ item }: { item: any }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="bg-white">
         <DropdownMenuLabel>{item?.name} Actions </DropdownMenuLabel>
-
-        <AddStockBtn item={item} formAction={addStock} />
-        <DropdownMenuItem>Remove Stock</DropdownMenuItem>
+        <div className="flex flex-col ">
+          <AddStockBtn item={item} formAction={addStock} />
+          <DropdownMenuItem>Remove Stock</DropdownMenuItem>
+        </div>
         <DropdownMenuSeparator />
         <div className="flex flex-col ">
           <EditItemBtn item={item} formAction={editItem} />

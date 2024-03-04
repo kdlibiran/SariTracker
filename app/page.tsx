@@ -24,15 +24,15 @@ export default async function Index() {
     );
   } else {
     return (
-      <div className="flex w-full flex-1 flex-col items-center gap-20">
+      <div className="flex w-full flex-1 flex-col items-center">
         <nav className="border-b-foreground/10 flex h-16 w-full justify-center border-b">
           <div className="flex w-full max-w-4xl items-center justify-between p-3 text-sm">
             SariTracker
             <AuthButton />
           </div>
         </nav>
-        <div className="flex w-full flex-1 flex-row items-center justify-center gap-20">
-          <div className="text-5xl">Find a store near you</div>
+        <div className="flex w-full flex-1 flex-row items-center justify-center">
+          <div className="w-1/3 text-5xl">Find a store near you</div>
           <StoreMap data={stores} />
         </div>
       </div>
