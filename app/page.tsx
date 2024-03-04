@@ -1,9 +1,15 @@
 import NavBar from "@/components/NavBar";
 import AuthButton from "../components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
+import GoogleMaps from "@/components/GoogleMaps";
+import StoreMap from "@/components/StoreMap";
 
 export default async function Index() {
   const supabase = createClient();
+
+  const { data: stores, error: storeError } = await supabase
+    .from("stores")
+    .select("*");
 
   const {
     data: { user },
@@ -13,7 +19,7 @@ export default async function Index() {
     return (
       <div className="flex w-full flex-1 flex-col items-center gap-20">
         <NavBar />
-        <div>Home Page Place Holder</div>
+        <div>Home Page Placeholder</div>
       </div>
     );
   } else {
@@ -25,7 +31,10 @@ export default async function Index() {
             <AuthButton />
           </div>
         </nav>
-        <div>Landing Page Place Holder</div>
+        <div className="flex w-full flex-1 flex-row items-center justify-center gap-20">
+          <div className="text-5xl">Find a store near you</div>
+          <StoreMap data={stores} />
+        </div>
       </div>
     );
   }

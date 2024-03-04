@@ -93,6 +93,8 @@ export default function PlaceSearch({
         className="rounded-md border bg-inherit px-4 py-2"
         placeholder="Enter Store Location"
       />
+      <input type="hidden" name="latitude" value={latitude ?? 0} />
+      <input type="hidden" name="longitude" value={longitude ?? 0} />
 
       {/* We can use the "status" to decide whether we should display the dropdown or not */}
 
