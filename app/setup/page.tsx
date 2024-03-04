@@ -2,7 +2,10 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "@/components/submit-button";
-
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
 import SearchMap from "@/components/SearchMap";
 export default function Signup({
   searchParams,
@@ -13,6 +16,8 @@ export default function Signup({
     "use server";
     const store = formData.get("store") as string;
     const location = formData.get("location") as string;
+    const lat = formData.get("latitude");
+    const lng = formData.get("longitude");
     const supabase = createClient();
 
     const { data: storeData, error: storeError } = await supabase
@@ -21,6 +26,8 @@ export default function Signup({
         {
           name: store,
           location: location,
+          latitude: lat,
+          longitude: lng,
         },
       ])
       .select("*");
