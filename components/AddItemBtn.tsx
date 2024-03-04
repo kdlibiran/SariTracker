@@ -14,7 +14,7 @@ import { useState } from "react";
 export default function AddItemBtn({
   formAction,
 }: {
-  formAction: (data: any) => Promise<any>;
+  formAction: (formData: FormData) => Promise<any> | null;
 }) {
   const categories = ["Food", "Non-Food", "Beverage"];
   const [open, setOpen] = useState(false);

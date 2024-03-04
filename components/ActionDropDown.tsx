@@ -14,6 +14,7 @@ import AddStockBtn from "./AddStockBtn";
 import { createClient } from "@/utils/supabase/client";
 import EditItemBtn from "./EditItemBtn";
 import DeleteItemBtn from "./DeleteItemBtn";
+import RemoveStockBtn from "./RemoveStockBtn";
 
 export default function ActionDropDown({ item }: { item: any }) {
   const addStock = async (formData: FormData) => {
@@ -21,7 +22,6 @@ export default function ActionDropDown({ item }: { item: any }) {
     const quantity = formData.get("quantity") ?? "0";
     const expiry = formData.get("expiry");
     const date = new Date().toLocaleDateString();
-    console.log(date, expiry, quantity, item.id);
     const { data, error } = await supabase.from("purchaserecord").insert({
       item_id: item.id,
       quantity,
@@ -33,12 +33,12 @@ export default function ActionDropDown({ item }: { item: any }) {
       console.log(error);
     }
     //compare expiry date with current earliest expiry date
-    const earliestExpiry = item.expiry?.date < expiry! ? item.expiry : expiry;
+    const earliestExpiry = item.expiry?.date > expiry! ? item.expiry : expiry;
 
     const { data: itemData, error: itemError } = await supabase
       .from("items")
       .update({
-        quantity: item.quantity + quantity.toString(),
+        quantity: parseInt(item.quantity) + parseInt(quantity.toString()),
         expiry: earliestExpiry,
       })
       .eq("id", item.id);
@@ -60,15 +60,88 @@ export default function ActionDropDown({ item }: { item: any }) {
 
   const removeStock = async (formData: FormData) => {
     const supabase = createClient();
-    const quantity = formData.get("quantity") ?? "0";
+    const quantity = formData.get("quantity") ?? 0;
     const date = new Date().toLocaleDateString();
-    const { data, error } = await supabase.from("salesrecord").insert({
-      item_id: item.id,
-      quantity,
-      date,
-    });
-    if (error) {
-      console.log(error);
+    const quantityInt = parseInt(quantity.toString());
+    const itemQuantity: number = item.quantity ?? 0;
+    const itemSales: number = item.sales ?? 0;
+    if (quantityInt > itemQuantity) {
+      alert("Not enough stock!");
+      return;
+    }
+    try {
+      const { data, error } = await supabase.from("salesrecord").insert([
+        {
+          itemid: item.id,
+          quantity: quantityInt,
+          date,
+        },
+      ]);
+      if (error) throw error;
+
+      const newQuantity = (itemQuantity ?? 0) - quantityInt;
+      const newSales = (itemSales ?? 0) + quantityInt;
+
+      //get earliest expiry date from purchase record and its current quantity
+
+      let buffer: number = quantityInt;
+      do {
+        let { data: earliestExpiryData, error: earliestExpiryError } =
+          await supabase
+            .from("purchaserecord")
+            .select("id, expiry, currentquantity")
+            .eq("item_id", item.id)
+            .order("expiry", { ascending: true })
+            .gt("currentquantity", 0)
+            .limit(1)
+            .single();
+
+        if (earliestExpiryError) throw earliestExpiryError;
+        let newCurrentQuantity = 0;
+        const currQuantity: number = earliestExpiryData?.currentquantity ?? 0;
+
+        if (earliestExpiryData?.currentquantity > buffer) {
+          newCurrentQuantity = currQuantity - buffer;
+          buffer = 0;
+        } else {
+          buffer = quantityInt - currQuantity;
+        }
+        const { error: updatePurchaseError } = await supabase
+          .from("purchaserecord")
+          .update({
+            currentquantity: newCurrentQuantity,
+          })
+          .eq("id", parseInt(earliestExpiryData?.id));
+
+        if (updatePurchaseError) throw updatePurchaseError;
+        console.log(newCurrentQuantity);
+      } while (buffer !== 0);
+
+      const { data: earliestExpiryData, error: earliestExpiryError } =
+        await supabase
+          .from("purchaserecord")
+          .select("expiry, currentquantity")
+          .eq("item_id", item.id)
+          .order("expiry", { ascending: true })
+          .gt("currentquantity", 0)
+          .limit(1)
+          .single();
+
+      const newExpiry = earliestExpiryData?.expiry ?? null;
+
+      const { error: updateError } = await supabase
+        .from("items")
+        .update({
+          quantity: newQuantity,
+          sales: newSales,
+          expiry: newExpiry,
+        })
+        .eq("id", item.id);
+      if (updateError) throw updateError;
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      return 1;
     }
   };
 
@@ -97,7 +170,7 @@ export default function ActionDropDown({ item }: { item: any }) {
         <DropdownMenuLabel>{item?.name} Actions </DropdownMenuLabel>
         <div className="flex flex-col ">
           <AddStockBtn item={item} formAction={addStock} />
-          <DropdownMenuItem>Remove Stock</DropdownMenuItem>
+          <RemoveStockBtn item={item} formAction={removeStock} />
         </div>
         <DropdownMenuSeparator />
         <div className="flex flex-col ">
