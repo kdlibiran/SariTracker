@@ -8,28 +8,55 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
+import { useEffect } from "react";
+import ActionDropDown from "./ActionDropDown";
 
 export default function InventoryTable({ data }: { data: any[] | null }) {
-  return (
-    <div>
+  const [items, setItems] = useState<any[] | null>([]);
+  const getItems = async () => {
+    setItems(data);
+  };
+  useEffect(() => {
+    getItems();
+  }, []);
+
+  if (items) {
+    return (
       <Table>
-        <TableHead>
-          <TableRow className="flex flex-row text-center">
-            <TableHeader>Name</TableHeader>
-            <TableHeader>Quantity</TableHeader>
-            <TableHeader>Price</TableHeader>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead>Quantity</TableHead>
+            <TableHead>Sales</TableHead>
+            <TableHead>Expiry Date</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead></TableHead>
           </TableRow>
-        </TableHead>
+        </TableHeader>
         <TableBody>
-          {data?.map((row) => (
+          {items?.map((row) => (
             <TableRow key={row.id}>
               <TableCell>{row.name}</TableCell>
+              <TableCell>{row.category}</TableCell>
               <TableCell>{row.quantity}</TableCell>
+              <TableCell>{row.sales}</TableCell>
+              <TableCell>{row.expiry ?? "N/A"}</TableCell>
               <TableCell>{row.price}</TableCell>
+              <TableCell>
+                <ActionDropDown item={row} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div>
+        <Skeleton />
+      </div>
+    );
+  }
 }

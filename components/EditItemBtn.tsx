@@ -10,16 +10,17 @@ import {
 } from "@/components/ui/sheet";
 import { SubmitButton } from "@/components/submit-button";
 import { useState } from "react";
+import { DropdownMenuItem } from "./ui/dropdown-menu";
 
-export default function AddItemBtn({
+export default function EditItemBtn({
+  item,
   formAction,
 }: {
+  item: any;
   formAction: (data: any) => Promise<any>;
 }) {
-  const categories = ["Food", "Non-Food", "Beverage"];
   const [open, setOpen] = useState(false);
-
-  const passForm = async (formData: FormData) => {
+  const editItem = async (formData: FormData) => {
     const response = await formAction(formData);
     if (response == 1) {
       setOpen(false);
@@ -28,14 +29,16 @@ export default function AddItemBtn({
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger className="rounded-md border border-black px-4 py-2">
-        Add
+      <SheetTrigger>
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          Edit Item
+        </DropdownMenuItem>
       </SheetTrigger>
       <SheetContent className="bg-white">
         <SheetHeader>
-          <SheetTitle>Add Item</SheetTitle>
+          <SheetTitle>{item.name}: Edit Item</SheetTitle>
           <SheetDescription>
-            Fill in the form below to add a new item to the inventory
+            Fill in the form below to edit {item.name}
             <div>
               <form className="flex flex-1 flex-col justify-start gap-2 rounded-md p-2 pt-5">
                 <label htmlFor="name" className="text-md">
@@ -44,36 +47,15 @@ export default function AddItemBtn({
                 <input
                   type="text"
                   name="name"
+                  defaultValue={item.name}
                   className="rounded-md border bg-inherit px-4 py-2"
                 />
-                <label htmlFor="category" className="text-md">
-                  Category
-                </label>
-                <select
-                  className="appearance-none rounded-md border bg-inherit px-4 py-2"
-                  name="category"
-                >
-                  {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-                <label htmlFor="price" className="text-md">
-                  Price
-                </label>
-                <input
-                  type="number"
-                  name="price"
-                  className="rounded-md border bg-inherit px-4 py-2"
-                />
-
                 <SubmitButton
-                  formAction={passForm}
+                  formAction={editItem}
                   className="mb-2 rounded-md border bg-black px-4 py-2 text-white"
-                  pendingText="Adding..."
+                  pendingText="Editing..."
                 >
-                  Add Item
+                  Edit Item
                 </SubmitButton>
               </form>
             </div>
