@@ -14,8 +14,8 @@ export default async function NavBar() {
   };
 
   return (
-    <nav className="border-b-foreground/10 flex h-16 w-full justify-center border-b">
-      <div className="flex w-full max-w-4xl items-center justify-between p-3 text-sm">
+    <nav className="flex h-16 w-full justify-center border border-b">
+      <div className="flex w-full max-w-6xl items-center justify-between text-sm ">
         SariTracker
         <div className="flex flex-row justify-center gap-2">
           <Link href="/" className="rounded-md  px-4 py-2">

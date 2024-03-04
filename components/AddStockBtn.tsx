@@ -10,16 +10,17 @@ import {
 } from "@/components/ui/sheet";
 import { SubmitButton } from "@/components/submit-button";
 import { useState } from "react";
+import { DropdownMenuItem } from "./ui/dropdown-menu";
 
-export default function AddItemBtn({
+export default function AddStockBtn({
+  item,
   formAction,
 }: {
+  item: any;
   formAction: (data: any) => Promise<any>;
 }) {
-  const categories = ["Food", "Non-Food", "Beverage"];
   const [open, setOpen] = useState(false);
-
-  const passForm = async (formData: FormData) => {
+  const addItem = async (formData: FormData) => {
     const response = await formAction(formData);
     if (response == 1) {
       setOpen(false);
@@ -28,52 +29,41 @@ export default function AddItemBtn({
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger className="rounded-md border border-black px-4 py-2">
-        Add
+      <SheetTrigger>
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          Add Stock
+        </DropdownMenuItem>
       </SheetTrigger>
       <SheetContent className="bg-white">
         <SheetHeader>
-          <SheetTitle>Add Item</SheetTitle>
+          <SheetTitle>{item.name}: Add Stock</SheetTitle>
           <SheetDescription>
-            Fill in the form below to add a new item to the inventory
+            Fill in the form below to add a stock to {item.name}
             <div>
               <form className="flex flex-1 flex-col justify-start gap-2 rounded-md p-2 pt-5">
-                <label htmlFor="name" className="text-md">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  className="rounded-md border bg-inherit px-4 py-2"
-                />
-                <label htmlFor="category" className="text-md">
-                  Category
-                </label>
-                <select
-                  className="appearance-none rounded-md border bg-inherit px-4 py-2"
-                  name="category"
-                >
-                  {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-                <label htmlFor="price" className="text-md">
-                  Price
+                <label htmlFor="quantity" className="text-md">
+                  Quantity
                 </label>
                 <input
                   type="number"
-                  name="price"
+                  name="quantity"
                   className="rounded-md border bg-inherit px-4 py-2"
                 />
-
+                <label htmlFor="expiry" className="text-md">
+                  Expiry Date
+                </label>
+                <input
+                  type="date"
+                  name="expiry"
+                  defaultValue={new Date().toISOString().split("T")[0]}
+                  className="rounded-md border bg-inherit px-4 py-2"
+                />
                 <SubmitButton
-                  formAction={passForm}
+                  formAction={addItem}
                   className="mb-2 rounded-md border bg-black px-4 py-2 text-white"
                   pendingText="Adding..."
                 >
-                  Add Item
+                  Add Stock
                 </SubmitButton>
               </form>
             </div>
