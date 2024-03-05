@@ -5,7 +5,10 @@ import usePlacesAutocomplete, {
 } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { useEffect, useState } from "react";
+<<<<<<< HEAD
 import { InputType } from "zlib";
+=======
+>>>>>>> a9e951e288dfebd448f44c7dfc77487be034251f
 
 export default function PlaceSearch({
   latitude,
@@ -43,19 +46,19 @@ export default function PlaceSearch({
 
   const handleSelect =
     ({ description }: { description: string }) =>
-    () => {
-      // When the user selects a place, we can replace the keyword without request data from API
-      // by setting the second parameter to "false"
-      setValue(description, false);
-      clearSuggestions();
+      () => {
+        // When the user selects a place, we can replace the keyword without request data from API
+        // by setting the second parameter to "false"
+        setValue(description, false);
+        clearSuggestions();
 
-      // Get latitude and longitude via utility functions
-      getGeocode({ address: description }).then((results) => {
-        const { lat, lng } = getLatLng(results[0]);
-        setLatitude(lat);
-        setLongitude(lng);
-      });
-    };
+        // Get latitude and longitude via utility functions
+        getGeocode({ address: description }).then((results) => {
+          const { lat, lng } = getLatLng(results[0]);
+          setLatitude(lat);
+          setLongitude(lng);
+        });
+      };
 
   useEffect(() => {
     if (latitude && longitude) {
