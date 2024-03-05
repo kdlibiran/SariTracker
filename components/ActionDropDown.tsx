@@ -45,19 +45,6 @@ export default function ActionDropDown({ item }: { item: any }) {
     return 1;
   };
 
-  const editItem = async (formData: FormData) => {
-    const supabase = createClient();
-    const name = formData.get("name");
-    const { data: editData, error: editError } = await supabase
-      .from("items")
-      .update({ name })
-      .eq("id", item.id);
-    if (editError) {
-      console.log(editError);
-    }
-    return 1;
-  };
-
   const removeStock = async (formData: FormData) => {
     const supabase = createClient();
     const quantity = formData.get("quantity") ?? 0;
@@ -143,6 +130,20 @@ export default function ActionDropDown({ item }: { item: any }) {
     } finally {
       return 1;
     }
+  };
+
+  const editItem = async (formData: FormData) => {
+    const supabase = createClient();
+    const name = formData.get("name");
+    const price = formData.get("price");
+    const { data: editData, error: editError } = await supabase
+      .from("items")
+      .update({ name, price })
+      .eq("id", item.id);
+    if (editError) {
+      console.log(editError);
+    }
+    return 1;
   };
 
   const deleteItem = async () => {

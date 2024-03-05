@@ -2,7 +2,8 @@
 import React from "react";
 import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
 import { useRouter } from "next/navigation";
-
+import { Skeleton } from "./ui/skeleton";
+import { store } from "@/types/supabase";
 const containerStyle = {
   width: "400px",
   height: "400px",
@@ -13,7 +14,19 @@ const center = {
   lng: 121.0685,
 };
 
-export default function StoreMap({ data }: { data: any[] | null }) {
+export default function StoreMap({
+  data,
+  latitude,
+  setLatitude,
+  longitude,
+  setLongitude,
+}: {
+  data: store[];
+  latitude: number | null;
+  setLatitude: (latitude: number | null) => void;
+  longitude: number | null;
+  setLongitude: (longitude: number | null) => void;
+}) {
   const router = useRouter();
   const { isLoaded } = useJsApiLoader({
     id: "pragmatic-ratio-415914",
@@ -24,8 +37,6 @@ export default function StoreMap({ data }: { data: any[] | null }) {
   const onLoad = React.useCallback(function callback(
     map: google.maps.Map | null,
   ) {
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map?.fitBounds(bounds);
     setMap(map);
   }, []);
 
@@ -38,8 +49,11 @@ export default function StoreMap({ data }: { data: any[] | null }) {
     <div className="z-0 my-4 ">
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={center}
-        zoom={15}
+        center={{
+          lat: latitude || center.lat,
+          lng: longitude || center.lng,
+        }}
+        zoom={12}
         onLoad={onLoad}
         onUnmount={onUnmount}
       >
@@ -52,10 +66,11 @@ export default function StoreMap({ data }: { data: any[] | null }) {
             position={{ lat: store.latitude, lng: store.longitude }}
           />
         ))}
-        <></>
       </GoogleMap>
     </div>
   ) : (
-    <></>
+    <div>
+      <Skeleton className="h-[400px] w-[400px]" />
+    </div>
   );
 }
