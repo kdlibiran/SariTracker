@@ -50,6 +50,15 @@ export default function EditItemBtn({
                   defaultValue={item.name}
                   className="rounded-md border bg-inherit px-4 py-2"
                 />
+                <label htmlFor="price" className="text-md">
+                  Price
+                </label>
+                <input
+                  type="number"
+                  name="price"
+                  defaultValue={item.price}
+                  className="rounded-md border bg-inherit px-4 py-2"
+                />
                 <SubmitButton
                   formAction={editItem}
                   className="mb-2 rounded-md border bg-black px-4 py-2 text-white"

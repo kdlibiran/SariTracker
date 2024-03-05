@@ -39,7 +39,7 @@ export default function InventoryTable({
   if (items && owner) {
     return (
       <div>
-        <div className="flex flex-row gap-4">
+        <div className="mb-4 flex flex-row gap-4">
           <input
             type="text"
             className="w-full rounded-md border border-gray-300 p-2"

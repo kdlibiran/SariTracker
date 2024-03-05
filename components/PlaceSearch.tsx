@@ -75,7 +75,7 @@ export default function PlaceSearch({
         <li
           key={place_id}
           onClick={handleSelect(suggestion)}
-          className="cursor-pointer hover:bg-gray-50"
+          className=" cursor-pointer text-wrap hover:bg-gray-50"
         >
           <strong>{main_text}</strong> <small>{secondary_text}</small>
         </li>
@@ -90,7 +90,7 @@ export default function PlaceSearch({
         disabled={!ready}
         id="location"
         name="location"
-        className="rounded-md border bg-inherit px-4 py-2"
+        className="w-[400px] rounded-md border bg-inherit px-4 py-2"
         placeholder="Enter Store Location"
       />
       <input type="hidden" name="latitude" value={latitude ?? 0} />
@@ -99,7 +99,7 @@ export default function PlaceSearch({
       {/* We can use the "status" to decide whether we should display the dropdown or not */}
 
       {status === "OK" && (
-        <ul className="rounded-md border bg-inherit px-4 py-2">
+        <ul className="w-[400px] rounded-md border bg-inherit px-4 py-2">
           {renderSuggestions()}
         </ul>
       )}
