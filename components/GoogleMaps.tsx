@@ -30,7 +30,6 @@ export default function GoogleMaps({
       lat: latitude || 0,
       lng: longitude || 0,
     });
-    map.fitBounds(bounds);
     setMap(map);
   }, []);
 

@@ -5,6 +5,7 @@ import usePlacesAutocomplete, {
 } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { useEffect, useState } from "react";
+import { InputType } from "zlib";
 
 export default function PlaceSearch({
   latitude,
@@ -35,13 +36,13 @@ export default function PlaceSearch({
     clearSuggestions();
   });
 
-  const handleInput = (e) => {
+  const handleInput = (e: any) => {
     // Update the keyword of the input element
     setValue(e.target.value);
   };
 
   const handleSelect =
-    ({ description }) =>
+    ({ description }: { description: string }) =>
     () => {
       // When the user selects a place, we can replace the keyword without request data from API
       // by setting the second parameter to "false"

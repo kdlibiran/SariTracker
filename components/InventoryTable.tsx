@@ -21,7 +21,7 @@ export default function InventoryTable({
 }: {
   data: item[];
   owner: boolean;
-  formAction: (formData: FormData) => Promise<any> | null;
+  formAction: ((formData: FormData) => Promise<any>) | null;
 }) {
   const [items, setItems] = useState<item[]>([]);
   const [name, setName] = useState<string>("");
