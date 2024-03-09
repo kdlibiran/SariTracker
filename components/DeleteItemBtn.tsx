@@ -24,6 +24,7 @@ export default function DeleteItemBtn({
     const response = await formAction(null);
     if (response == 1) {
       setOpen(false);
+      window.location.reload();
     }
   };
 

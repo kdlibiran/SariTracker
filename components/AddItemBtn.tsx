@@ -23,6 +23,7 @@ export default function AddItemBtn({
     const response = await formAction(formData);
     if (response == 1) {
       setOpen(false);
+      window.location.reload();
     }
   };
 

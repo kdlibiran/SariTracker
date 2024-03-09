@@ -24,6 +24,7 @@ export default function RemoveStockBtn({
     const response = await formAction(formData);
     if (response == 1) {
       setOpen(false);
+      window.location.reload();
     }
   };
 
