@@ -26,6 +26,8 @@ export type Database = {
           sales: number;
           store_id: number;
           user_id: string;
+          purchaserecord: purchaserecord[];
+          salesrecord: salesrecord[];
         };
         Insert: {
           category: string;

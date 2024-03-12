@@ -11,7 +11,7 @@ export default async function Index() {
   } = await supabase.auth.getUser();
   const { data, error } = await supabase
     .from("items")
-    .select("*")
+    .select("*, purchaserecord(*), salesrecord(*)")
     .eq("user_id", user?.id);
   if (error) {
     console.error(error);

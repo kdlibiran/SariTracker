@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import ActionDropDown from "./ActionDropDown";
 import { item } from "@/types/supabase";
 import AddItemBtn from "./AddItemBtn";
-
+import History from "./History";
 export default function InventoryTable({
   data,
   owner,
@@ -63,9 +63,10 @@ export default function InventoryTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {items?.map((row) => (
+            {items?.map((row: item) => (
               <TableRow key={row.id}>
-                <TableCell>{row.name}</TableCell>
+                {owner && <History item={row} />}
+                {!owner && <TableCell>{row.name}</TableCell>}
                 <TableCell>{row.category}</TableCell>
                 <TableCell>{row.quantity}</TableCell>
                 <TableCell>{row.sales}</TableCell>
