@@ -9,7 +9,8 @@ export default async function ({ params }: { params: { store_id: string } }) {
   const { data, error } = await supabase
     .from("items")
     .select("*")
-    .eq("store_id", params.store_id);
+    .eq("store_id", params.store_id)
+    .gte("quantity", 1);
   const { data: storeData, error: storeError } = await supabase
     .from("stores")
     .select("*")
