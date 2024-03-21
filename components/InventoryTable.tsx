@@ -96,6 +96,7 @@ export default function InventoryTable({
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
+              <TableHead>Quantity</TableHead>
               <TableHead>Price</TableHead>
             </TableRow>
           </TableHeader>
@@ -103,6 +104,7 @@ export default function InventoryTable({
             {items?.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>{row.name}</TableCell>
+                <TableCell>{row.quantity}</TableCell>
                 <TableCell>{row.price}</TableCell>
               </TableRow>
             ))}

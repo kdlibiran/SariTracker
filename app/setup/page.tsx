@@ -1,11 +1,7 @@
-import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "@/components/submit-button";
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
+
 import SearchMap from "@/components/SearchMap";
 export default function Signup({
   searchParams,
