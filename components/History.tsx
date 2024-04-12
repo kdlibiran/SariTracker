@@ -30,7 +30,25 @@ export default function History({ item }: { item: item }) {
           <DialogTitle>{item.name} History</DialogTitle>
         </DialogHeader>
         <div className="overflow-x-auto">
-          <Tabs defaultValue="purchase" className="w-full">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Quantity</TableHead>
+                <TableHead>Sales</TableHead>
+                <TableHead>Expiry Date</TableHead>
+                <TableHead>Price</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell>{item.quantity}</TableCell>
+                <TableCell>{item.sales}</TableCell>
+                <TableCell>{item.expiry}</TableCell>
+                <TableCell>{item.price}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <Tabs defaultValue="purchase" className="w-full mt-4">
             <TabsList className="border">
               <TabsTrigger
                 value="purchase"
